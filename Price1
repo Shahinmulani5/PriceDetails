@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import img from '../assets/img.png';
 
 interface PricingComparisonProps {
   amount?: number;
@@ -57,6 +58,8 @@ export default function PricingDetailsNew({ amount = 1000 }: PricingComparisonPr
     }
   };
 
+  
+
   const calculateAmounts = () => {
     const rate = rates["USD"];
     const exchangeRate = rate ? (1 / rate).toFixed(2) : 0;
@@ -105,13 +108,20 @@ export default function PricingDetailsNew({ amount = 1000 }: PricingComparisonPr
       width: "520px",
       height: "fit-content",
       padding: "24px",
-      background: "linear-gradient(315deg, rgb(0, 0, 255, 0.2) 0%, rgba(255, 255, 255, 1) 35%, rgba(255, 192, 203, 0.3) 100%)",
-      borderRadius: "16px",
+      opacity: 1,
+      backgroundImage: `url(https://d2pldvnlcmq63z.cloudfront.net/FE-Asset/Bundle%20Asset/Pricing-Calculator-Background.png)`,
+      mixBlendMode: "normal",
+      borderRadius: "24px",
       boxShadow: "0 4px 20px rgba(0, 0, 0, 0.05)",
       fontFamily: "Inter, sans-serif",
       boxSizing: "border-box" as const,
       margin: "0 auto",
+      position: "relative",
+      backgroundRepeat: "no-repeat",
+      backgroundPosition: "center",
     },
+
+
     clientSends: {
       marginBottom: "16px",
       display: "flex",
@@ -167,7 +177,7 @@ export default function PricingDetailsNew({ amount = 1000 }: PricingComparisonPr
     rateRow: {
       display: "flex",
       alignItems: "center",
-      width: "195px",
+      width: "100%",
       height: "18px",
       gap: "16px",
       marginBottom: "8px",
@@ -180,7 +190,7 @@ export default function PricingDetailsNew({ amount = 1000 }: PricingComparisonPr
     fxRate: {
       color: "#1A1A1A",
       fontSize: "14px",
-      fontWeight: "500",
+      fontWeight: "600",
       minWidth: "fit-content",
       padding: "0 8px",
       lineHeight: "18px",
@@ -207,8 +217,8 @@ export default function PricingDetailsNew({ amount = 1000 }: PricingComparisonPr
       height: "280px",
       borderRadius: "8px",
       padding: "16px",
-      backgroundColor: "white",
-      background: "linear-gradient(315deg, rgb(0, 0, 255, 0.2) 0%, rgba(255, 255, 255, 1) 35%, rgba(255, 192, 203, 0.3) 100%)",
+      background: "#fff",
+      // background: "linear-gradient(315deg, rgb(0, 0, 255, 0.2) 0%, rgba(255, 255, 255, 1) 35%, rgba(255, 192, 203, 0.3) 100%)",
     },
     receiveTitle: {
       color: "#666",
@@ -216,7 +226,8 @@ export default function PricingDetailsNew({ amount = 1000 }: PricingComparisonPr
       marginBottom: "16px",
     },
     infinityLogo: {
-      height: "24px",
+      height: "16px",
+      width: "74px",
       marginBottom: "12px",
       objectFit: "contain" as const,
     },
@@ -227,23 +238,29 @@ export default function PricingDetailsNew({ amount = 1000 }: PricingComparisonPr
       marginBottom: "8px",
     },
     savings: {
-      color: "#15803D",
+      color: "#128807",
       fontSize: "14px",
       fontWeight: "700",
       display: "flex",
       alignItems: "center",
       width: "100%",
-      marginBottom: "24px",
+      marginBottom: "15px",
     },
     settlement: {
-      backgroundColor: "#166534",
+      backgroundColor: "#128807",
       color: "white",
       padding: "4px 8px",
-      borderRadius: "16px",
+      borderRadius: "6px",
       fontSize: "12px",
       fontWeight: "500",
       marginLeft: "auto",
-      marginTop: "-4px",
+      marginTop: "-60px",
+      display: "flex",
+      alignItems: "center",
+      gap: "4px",
+    },
+    whiteEmoji: {
+      filter: "brightness(0) invert(1)",
     },
     comparisonBox: {
       display: "flex",
@@ -258,19 +275,23 @@ export default function PricingDetailsNew({ amount = 1000 }: PricingComparisonPr
       padding: "12px",
       backgroundColor: "#F8FAFC",
       borderRadius: "8px",
-    },
-    serviceLogo: {
-      height: "24px",
-      marginBottom: "0",
+      position: "relative",
     },
     serviceLogoGroup: {
       display: "flex",
       alignItems: "center",
-      gap: "8px",
-      marginBottom: "8px",
+      gap: "4px",
+      marginBottom: "16px",
+      position: "absolute",
+      top: "8px",
+      left: "8px",
+    },
+    serviceLogo: {
+      height: "20px",
+      objectFit: "contain",
     },
     serviceTitle: {
-      fontSize: "14px",
+      fontSize: "12px",
       color: "#1A1A1A",
       fontWeight: "600",
     },
@@ -279,10 +300,12 @@ export default function PricingDetailsNew({ amount = 1000 }: PricingComparisonPr
       fontWeight: "600",
       color: "#1A1A1A",
       marginBottom: "4px",
+      marginTop: "32px",
     },
     difference: {
-      color: "#EF4444",
+      color: "#DC2626",
       fontSize: "12px",
+      fontWeight: "600",
     },
     savingsNote: {
       backgroundColor: "transparent",
@@ -311,7 +334,26 @@ export default function PricingDetailsNew({ amount = 1000 }: PricingComparisonPr
       alignItems: "center",
       justifyContent: "space-between",
       marginBottom: "0",
-    }
+    },
+    paypalLogo: {
+      width: "50px",
+      height: "auto",
+      objectFit: "contain",
+      position: "absolute",
+      top: "8px",
+      left: "8px",
+    },
+    settlementText: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '4px',
+      fontSize: '14px',
+      color: '#666666',
+      backgroundColor: '#F5F5F5',
+      padding: '4px 8px',
+      borderRadius: '4px',
+      width: 'fit-content',
+    },
   };
 
   return (
@@ -339,13 +381,23 @@ export default function PricingDetailsNew({ amount = 1000 }: PricingComparisonPr
       <div style={styles.exchangeRate}>
         <div style={styles.rateRow}>
           <div style={styles.horizontalLine} />
+          <div style={{
+            display:"flex",
+            flexDirection:'column',
+            justifyContent:"center",
+            alignItems:'center',
+            margin:'0px 10px'
+          }} >
+
           <div style={styles.fxRate}>FX INR {exchangeRate}</div>
-          <div style={styles.horizontalLine} />
-        </div>
-        <span style={styles.liveTag}>
+          <span style={styles.liveTag}>
           <div style={styles.blueDotSmall} />
           Live Fx, Zero markup
         </span>
+          </div>
+          <div style={styles.horizontalLine} />
+        </div>
+        
       </div>
 
       <div style={styles.mainComparisonBox}>
@@ -358,7 +410,9 @@ export default function PricingDetailsNew({ amount = 1000 }: PricingComparisonPr
         <div style={styles.receiveAmount}>₹ {infinityAmount}</div>
         <div style={styles.savings}>
           Get ₹{bankSavings} more than Bank
-          <span style={styles.settlement}>1 day settlement</span>
+          <span style={styles.settlement}>
+            <span style={styles.whiteEmoji}>⚡</span> 1 day settlement
+          </span>
         </div>
 
         <div style={styles.comparisonBox}>
@@ -378,7 +432,7 @@ export default function PricingDetailsNew({ amount = 1000 }: PricingComparisonPr
             <img 
               src="https://d2pldvnlcmq63z.cloudfront.net/FE-Asset/Bundle%20Asset/paypalLogo.svg" 
               alt="PayPal" 
-              style={styles.serviceLogo} 
+              style={styles.paypalLogo} 
             />
             <div style={styles.comparisonAmount}>₹ {paypalAmount}</div>
             <div style={styles.difference}>-₹{paypalSavings}</div>
@@ -386,7 +440,11 @@ export default function PricingDetailsNew({ amount = 1000 }: PricingComparisonPr
         </div>
 
         <div style={styles.savingsNote}>
-          <span style={styles.savingsIcon}>⚡</span>
+        <img
+                        src="https://d2pldvnlcmq63z.cloudfront.net/FE-Asset/Bundle%20Asset/fluent_sparkle-16-filled.svg"
+                        alt="sparkle"
+                        style={{ width: "16px", height: "16px" }}
+                    />
           Save ₹{annualSavings} annually with Infinity compared to banks
         </div>
       </div>
