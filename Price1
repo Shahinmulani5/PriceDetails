@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import img from '../assets/img.png';
 
 interface PricingComparisonProps {
   amount?: number;
@@ -137,6 +136,7 @@ export default function PricingDetailsNew({ amount = 1000 }: PricingComparisonPr
       borderRadius: "12px",
       boxShadow: "0 2px 8px rgba(0, 0, 0, 0.05)",
       boxSizing: "border-box" as const,
+      overflow: "hidden",
     },
     amountRow: {
       display: "flex",
@@ -144,11 +144,13 @@ export default function PricingDetailsNew({ amount = 1000 }: PricingComparisonPr
       justifyContent: "space-between",
       width: "100%",
       marginTop: "8px",
+      minWidth: 0,
     },
     currencyGroup: {
       display: "flex",
       alignItems: "center",
       gap: "8px",
+      flexShrink: 0,
     },
     currencyText: {
       fontWeight: "600",
@@ -165,6 +167,10 @@ export default function PricingDetailsNew({ amount = 1000 }: PricingComparisonPr
       color: "#1A1A1A",
       display: "flex",
       alignItems: "center",
+      minWidth: 0,
+      overflow: "visible",
+      width: "300px",
+      justifyContent: "flex-end"
     },
     exchangeRate: {
       display: "flex",
@@ -324,10 +330,12 @@ export default function PricingDetailsNew({ amount = 1000 }: PricingComparisonPr
       fontSize: "20px",
       fontWeight: "600",
       color: "#1A1A1A",
-      width: "120px",
+      width: "100%",
       outline: 'none',
       backgroundColor: 'transparent',
       textAlign: 'right' as const,
+      paddingRight: '8px',
+      overflow: 'visible'
     },
     rateContainer: {
       display: "flex",
