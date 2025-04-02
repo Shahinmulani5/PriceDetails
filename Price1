@@ -367,9 +367,9 @@ export default function PricingDetailsNew({ amount = 1000 }: PricingComparisonPr
               <span style={styles.currencyText}>USD</span>
             </div>
             <div style={styles.amount}>
-              $<input
+              <input
                 type="text"
-                value={usdAmount.toLocaleString()}
+                value={`$ ${usdAmount.toLocaleString()}`}
                 onChange={handleAmountChange}
                 style={styles.input}
               />
