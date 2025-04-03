@@ -22,8 +22,8 @@ export default function PricingDetailsNew({ amount = 1000 }: PricingComparisonPr
   // Bank and PayPal fees
   const bankMargin = 0.03; // 3% bank FX margin
   const bankFixedFee = 25; // $25 SWIFT fee
-  const paypalMargin = 0.04; // 4% PayPal margin
-
+  const paypalMargin = 0.025; // 2.5% PayPal margin
+  const paypalFee = 0.04; // 4% PayPal fee
   useEffect(() => {
     const fetchRates = async () => {
       try {
@@ -60,6 +60,19 @@ export default function PricingDetailsNew({ amount = 1000 }: PricingComparisonPr
   
 
   const calculateAmounts = () => {
+    // If input amount is 0, return all zeros
+    if (usdAmount === 0) {
+      return {
+        exchangeRate: "0.00",
+        infinityAmount: "0",
+        bankAmount: "0",
+        paypalAmount: "0",
+        bankSavings: "0",
+        paypalSavings: "0",
+        annualSavings: "0"
+      };
+    }
+
     const rate = rates["USD"];
     const exchangeRate = rate ? (1 / rate).toFixed(2) : 0;
     const numericExchangeRate = parseFloat(exchangeRate);
@@ -69,14 +82,14 @@ export default function PricingDetailsNew({ amount = 1000 }: PricingComparisonPr
     const infinityAmount = usdAmount * numericExchangeRate * (1 - infinityFee);
     
     // Bank amount (3% margin + $25 fixed fee)
-    const bankAmount = (usdAmount * numericExchangeRate * (1 - bankMargin)) - (bankFixedFee * numericExchangeRate);
+    const bankAmount = (Math.max((usdAmount - bankFixedFee), 1) * (numericExchangeRate * (1 - bankMargin)));
     
     // PayPal amount (4% margin)
-    const paypalAmount = usdAmount * numericExchangeRate * (1 - paypalMargin);
+    const paypalAmount = (usdAmount * (numericExchangeRate * (1 - paypalMargin))) * (1 - paypalFee);
     
     // Calculate savings
-    const bankSavings = infinityAmount - bankAmount;
-    const paypalSavings = infinityAmount - paypalAmount;
+    const bankSavings = Math.max(infinityAmount - bankAmount, 0);
+    const paypalSavings = Math.max(infinityAmount - paypalAmount, 0);
     
     // Annual savings (assuming monthly transactions)
     const annualSavings = bankSavings * 12;
@@ -397,7 +410,7 @@ export default function PricingDetailsNew({ amount = 1000 }: PricingComparisonPr
             margin:'0px 10px'
           }} >
 
-          <div style={styles.fxRate}>FX INR {exchangeRate}</div>
+          <div style={styles.fxRate}>FX INR <span style={{ color: "#216AFB" }}>{exchangeRate}</span></div>
           <span style={styles.liveTag}>
           <div style={styles.blueDotSmall} />
           Live Fx, Zero markup
@@ -434,7 +447,14 @@ export default function PricingDetailsNew({ amount = 1000 }: PricingComparisonPr
               <div style={styles.serviceTitle}>Bank</div>
             </div>
             <div style={styles.comparisonAmount}>₹ {bankAmount}</div>
-            <div style={styles.difference}>-₹{bankSavings}</div>
+            <div style={styles.difference}>
+              <img 
+                src="https://d2pldvnlcmq63z.cloudfront.net/FE-Asset/Bundle%20Asset/arrow_drop_down.svg" 
+                alt="difference" 
+                style={{ width: "12px", height: "12px", verticalAlign: "middle", marginRight: "2px" }}
+              />
+              ₹{bankSavings}
+            </div>
           </div>
           <div style={styles.comparisonItem}>
             <img 
@@ -443,13 +463,20 @@ export default function PricingDetailsNew({ amount = 1000 }: PricingComparisonPr
               style={styles.paypalLogo} 
             />
             <div style={styles.comparisonAmount}>₹ {paypalAmount}</div>
-            <div style={styles.difference}>-₹{paypalSavings}</div>
+            <div style={styles.difference}>
+              <img 
+                src="https://d2pldvnlcmq63z.cloudfront.net/FE-Asset/Bundle%20Asset/arrow_drop_down.svg" 
+                alt="difference" 
+                style={{ width: "12px", height: "12px", verticalAlign: "middle", marginRight: "2px" }}
+              />
+              ₹{paypalSavings}
+            </div>
           </div>
         </div>
 
         <div style={styles.savingsNote}>
         <img
-                        src="https://d2pldvnlcmq63z.cloudfront.net/FE-Asset/Bundle%20Asset/fluent_sparkle-16-filled.svg"
+                        src="https://d2pldvnlcmq63z.cloudfront.net/FE-Asset/Bundle%20Asset/fluent_sparkle-16-filled.png"
                         alt="sparkle"
                         style={{ width: "16px", height: "16px" }}
                     />
@@ -459,4 +486,3 @@ export default function PricingDetailsNew({ amount = 1000 }: PricingComparisonPr
     </div>
   );
 } 
-
